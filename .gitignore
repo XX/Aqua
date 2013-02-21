@@ -1,0 +1,16 @@
+# Eclipse ignores
+
+.metadata
+.settings
+.project
+.classpath
+
+
+# Maven ignores
+
+target
+
+
+# Other
+
+.directory
