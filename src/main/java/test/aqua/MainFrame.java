@@ -18,7 +18,21 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 	
-	private static Random rand = new Random() ;
+	public static final String TITLE = "Aqua";
+	
+	private static final int FRAME_WIDTH = 800;
+	
+	private static final int FRAME_HIGHT = 400;
+	
+	private static final int TICK_INTERVAL = 100;
+	
+	public static final int FISH_COUNT = 5;
+	
+	public static final int FISH_SIZE = 5;
+	
+	public static final int OFFSET_FROM_BORDER = 15;
+	
+	private static Random rand = new Random();
 	
 	private Point[] fishPoints;
 	
@@ -31,8 +45,8 @@ public class MainFrame extends JFrame {
 	private int maxY;
 	
 	public MainFrame() {
-		super("Aqua");
-		this.setSize(800, 400);
+		super(TITLE);
+		this.setSize(FRAME_WIDTH, FRAME_HIGHT);
 		this.setLocationRelativeTo(this.getRootPane());
 		
 		this.addKeyListener(new KeyListener() {
@@ -64,7 +78,7 @@ public class MainFrame extends JFrame {
 		};
 		this.add(panel);
 		
-		mainTimer = new Timer(100, new ActionListener() {
+		mainTimer = new Timer(TICK_INTERVAL, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,11 +91,11 @@ public class MainFrame extends JFrame {
 	 * Вызывается при загрузке фрейма
 	 */
 	private void load() {
-		maxX = this.getWidth() - 15;
-		maxY = this.getHeight() - 15;
+		maxX = this.getWidth() - OFFSET_FROM_BORDER;
+		maxY = this.getHeight() - OFFSET_FROM_BORDER;
 		
-		fishPoints = new Point[5];
-		for (int i = 0; i < 5; i++) {
+		fishPoints = new Point[FISH_COUNT];
+		for (int i = 0; i < fishPoints.length; i++) {
 			fishPoints[i] = new Point(rand.nextInt(maxX), rand.nextInt(maxY));
 		}
 		mainTimer.start();
@@ -120,7 +134,7 @@ public class MainFrame extends JFrame {
 		g.setColor(Color.RED);
 		for (Point fishPoint : 	fishPoints) {
 			if (fishPoint != null) {
-				g.drawRect(fishPoint.x, fishPoint.y, 5, 5);
+				g.drawRect(fishPoint.x, fishPoint.y, FISH_SIZE, FISH_SIZE);
 			}
 		}
 	}
