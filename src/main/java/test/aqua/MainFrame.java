@@ -1,24 +1,22 @@
 package test.aqua;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import test.aqua.core.AquaCore;
+
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 	
-	public static final String TITLE = "Aqua";
+	private static final String TITLE = "Aqua";
 	
 	private static final int FRAME_WIDTH = 800;
 	
@@ -26,23 +24,13 @@ public class MainFrame extends JFrame {
 	
 	private static final int TICK_INTERVAL = 100;
 	
-	public static final int FISH_COUNT = 5;
+	private static final int FISH_COUNT = 5;
 	
-	public static final int FISH_SIZE = 5;
-	
-	public static final int OFFSET_FROM_BORDER = 15;
-	
-	private static Random rand = new Random();
-	
-	private Point[] fishPoints;
+	private AquaCore core = new AquaCore();
 	
 	private JPanel panel;
 	
 	private Timer mainTimer;
-	
-	private int maxX;
-	
-	private int maxY;
 	
 	public MainFrame() {
 		super(TITLE);
@@ -91,13 +79,7 @@ public class MainFrame extends JFrame {
 	 * Вызывается при загрузке фрейма
 	 */
 	private void load() {
-		maxX = this.getWidth() - OFFSET_FROM_BORDER;
-		maxY = this.getHeight() - OFFSET_FROM_BORDER;
-		
-		fishPoints = new Point[FISH_COUNT];
-		for (int i = 0; i < fishPoints.length; i++) {
-			fishPoints[i] = new Point(rand.nextInt(maxX), rand.nextInt(maxY));
-		}
+		core.init(panel.getVisibleRect(), FISH_COUNT);
 		mainTimer.start();
 	}
 	
@@ -119,49 +101,14 @@ public class MainFrame extends JFrame {
 	 * Рисование содержимого
 	 */
 	protected void paintContent(Graphics g) {
-		Rectangle drawRect = new Rectangle((int)g.getClipBounds().getWidth() - 2,
-				(int) g.getClipBounds().getHeight() - 2);
-		
-		g.setColor(Color.BLACK);
-		g.drawRect(1, 1,
-				(int)drawRect.getWidth(),
-				(int)drawRect.getHeight());
-		
-		if (fishPoints == null) {
-			return;
-		}
-		
-		g.setColor(Color.RED);
-		for (Point fishPoint : 	fishPoints) {
-			if (fishPoint != null) {
-				g.drawRect(fishPoint.x, fishPoint.y, FISH_SIZE, FISH_SIZE);
-			}
-		}
+		core.draw(g);
 	}
 	
 	/**
 	 * Тик таймера
 	 */
 	protected void tickMainTimer() {
-		if (fishPoints == null) {
-			return;
-		}
-		// Перемещение рыбок
-		for (Point fishPoint : 	fishPoints) {
-			if (fishPoint != null) {
-				
-				int newX = fishPoint.x + rand.nextInt(3) - 1;
-				int newY = fishPoint.y + rand.nextInt(3) - 1;
-				
-				if (newX < maxX && newX > 0) {
-					fishPoint.x = newX;
-				}
-				if (newY < maxY && newY > 0) {
-					fishPoint.y = newY;
-				}
-			}
-		}
-		
+		core.tick();		
 		panel.repaint();
 	}
 	
@@ -185,6 +132,9 @@ public class MainFrame extends JFrame {
 		load();		
 	}
 	
+	/**
+	 * Закрывает фрейм и приложение
+	 */
 	private void close() {
 		setVisible(false);
 		dispose();
