@@ -37,6 +37,9 @@ public class AquaCore {
 	}
 	
 	public void draw(Graphics graphics) {
+		aquaRect.setSize(
+				graphics.getClipBounds().getSize());
+		
 		Color oldColor = graphics.getColor();
 		
 		graphics.setColor(Color.BLACK);
