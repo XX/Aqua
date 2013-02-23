@@ -5,8 +5,10 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import test.aqua.core.api.Internalable;
 
-public class AquaCore {
+
+public class AquaCore implements Internalable {
 	
 	public static final int FISH_TYPES = 5;
 	
@@ -32,7 +34,7 @@ public class AquaCore {
 			int initX = rand.nextInt(maxX - OFFSET_FROM_BORDER);
 			int initY = rand.nextInt(maxY - OFFSET_FROM_BORDER);
 			
-			fishes[i] = new BaseFish(rand, initX, initY);
+			fishes[i] = new BaseFish(rand, initX, initY, this);
 		}
 	}
 	
@@ -63,6 +65,20 @@ public class AquaCore {
 				fish.tick();
 			}
 		}
+	}
+
+	@Override
+	public boolean checkPoint(int x, int y) {
+		int maxX = aquaRect.width;
+		int maxY = aquaRect.height;
+		
+		if (x >= maxX || x <= 0) {
+			return false;
+		}
+		if (y >= maxY || y <= 0) {
+			return false;
+		}
+		return true;
 	}
 	
 }

@@ -1,11 +1,14 @@
-package test.aqua.core;
+package test.aqua.core.api;
 
 import java.awt.Graphics;
 import java.util.Random;
 
+
 public abstract class AbstractAquaObject {
 	
 	protected Random rand;
+	
+	protected Internalable foreignBox;
 	
 	protected int x;
 	
@@ -18,10 +21,11 @@ public abstract class AbstractAquaObject {
 	 * @param x начальная координата объекта
 	 * @param y начальная координата объекта
 	 */
-	public AbstractAquaObject(Random rand, int x, int y) {
+	public AbstractAquaObject(Random rand, int x, int y, Internalable foreignBox) {
 		this.rand = rand;
 		this.x = x;
 		this.y = y;
+		this.foreignBox = foreignBox;
 	}
 	
 	/**

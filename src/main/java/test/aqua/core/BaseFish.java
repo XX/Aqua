@@ -4,13 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
+import test.aqua.core.api.AbstractAquaObject;
+import test.aqua.core.api.Internalable;
+
 
 public class BaseFish extends AbstractAquaObject {
 
 	public static final int FISH_SIZE = 5;
 	
-	public BaseFish(Random rand, int x, int y) {
-		super(rand, x, y);
+	public BaseFish(Random rand, int x, int y, Internalable foreignBox) {
+		super(rand, x, y, foreignBox);
 	}
 
 	@Override
@@ -29,18 +32,10 @@ public class BaseFish extends AbstractAquaObject {
 		int newX = x + xDirection;
 		int newY = y + yDirection;
 		
-//		int maxX = aquaRect.width;
-//		int maxY = aquaRect.height;
-//		
-//		if (newX < maxX && newX > 0) {
-//			fishPoint.x = newX;
-//		}
-//		if (newY < maxY && newY > 0) {
-//			fishPoint.y = newY;
-//		}
-		
-		x = newX;
-		y = newY;
+		if (foreignBox == null || foreignBox.checkPoint(newX, newY)) {
+			x = newX;
+			y = newY;
+		}
 	}
 
 }
